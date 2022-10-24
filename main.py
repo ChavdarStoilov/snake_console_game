@@ -30,11 +30,25 @@ def apple_position(size_board):
     return row, col
 
 
-def the_game():
-    SIZE = 20
-    board = [['.'] * SIZE for _ in range(SIZE)]
+def move_action(board, row, col, the_move, firs_moves, size):
 
-    snake_row, snake_col = snake_position(SIZE)
+
+    board[row][col] = '.'
+    row, col = row + firs_moves[the_move][0], col + firs_moves[the_move][1]
+
+    if board[row][col] == 'A':
+        apple_row, apple_col = apple_position(size)
+        board[row][col] = '*'
+        board[apple_row][apple_col] = 'A'
+    else:
+        board[row][col] = '*'
+
+    return board, row, col
+
+
+
+def the_game(board, size):
+    snake_row, snake_col = snake_position(size)
 
     firs_moves = {
         'right': (0, 1),
@@ -52,8 +66,9 @@ def the_game():
 
     snake_row, snake_col = snake_row + start_to[0], snake_col + start_to[1]
 
-    apple_row, apple_col = apple_position(SIZE)
+    apple_row, apple_col = apple_position(size)
     board[apple_row][apple_col] = 'A'
+
     snake = []
 
 
@@ -61,40 +76,44 @@ def the_game():
         time.sleep(0.20)
         clear()
 
-        if keyboard.is_pressed('s'):
+        if keyboard.is_pressed('down'):
             move = 'down'
-            board[snake_row][snake_col] = '.'
-            snake_row, snake_col = snake_row + firs_moves[move][0], snake_col + firs_moves[move][1]
-            board[snake_row][snake_col] = 'S'
 
-        elif keyboard.is_pressed('d'):
+            board, snake_row, snake_col = move_action(board, snake_row, snake_col, move, firs_moves, size)
+
+
+        elif keyboard.is_pressed('right'):
             move = 'right'
-            board[snake_row][snake_col] = '.'
-            snake_row, snake_col = snake_row + firs_moves[move][0], snake_col + firs_moves[move][1]
-            board[snake_row][snake_col] = 'S'
 
-        elif keyboard.is_pressed('w'):
+            board, snake_row, snake_col = move_action(board, snake_row, snake_col, move, firs_moves, size)
+
+        elif keyboard.is_pressed('up'):
             move = 'up'
-            board[snake_row][snake_col] = '.'
-            snake_row, snake_col = snake_row + firs_moves[move][0], snake_col + firs_moves[move][1]
-            board[snake_row][snake_col] = 'S'
 
-        elif keyboard.is_pressed('a'):
+            board, snake_row, snake_col = move_action(board, snake_row, snake_col, move, firs_moves, size)
+
+        elif keyboard.is_pressed('left'):
             move = 'left'
-            board[snake_row][snake_col] = '.'
-            snake_row, snake_col = snake_row + firs_moves[move][0], snake_col + firs_moves[move][1]
-            board[snake_row][snake_col] = 'S'
+
+            board, snake_row, snake_col = move_action(board, snake_row, snake_col, move, firs_moves, size)
 
         elif keyboard.is_pressed('escape'):
             break
+
         else:
+
             board[snake_row][snake_col] = '.'
             snake_row, snake_col = snake_row + firs_moves[move][0], snake_col + firs_moves[move][1]
             if 0 < snake_row < len(board) and 0 < snake_col < len(board):
-                board[snake_row][snake_col] = 'S'
+                if board[snake_row][snake_col] == 'A':
+                    apple_row, apple_col = apple_position(size)
+                    board[snake_row][snake_col] = '*'
+                    board[apple_row][apple_col] = 'A'
+                else:
+                    board[snake_row][snake_col] = '*'
             else:
-                board[snake_row - firs_moves[move][0]][snake_col - firs_moves[move][1]] = 'S'
-                print('\nYou dead\n')
+                board[snake_row - firs_moves[move][0]][snake_col - firs_moves[move][1]] = '*'
+                print('\n\t\tYou dead\n')
                 break
 
 
@@ -103,28 +122,35 @@ def the_game():
     print_board(board)
 
 
-def play_the_game_again():
+def play_the_game_again(board, size):
 
     play_again = input('\nDo you wanna play again (yes, no) ?\n')
 
     if play_again.lower() == 'yes':
-        the_game()
+        the_game(board, size)
+
     elif play_again.lower() == 'no':
         print('\nGoodbye')
         time.sleep(1)
         os.system('exit')
 
-def start_the_game():
+def start_the_game(board, size):
     start_game = input('Start game (yes, no) ?\n')
 
     if start_game.lower() == 'yes':
-        the_game()
-        play_the_game_again()
+        the_game(board, size)
+        clear()
+
+        play_the_game_again(board, size)
+
     elif start_game.lower() == 'no':
         print('\nGoodbye')
         time.sleep(1)
         os.system('exit')
 
 
-start_the_game()
 
+SIZE = 20
+board = [['.'] * SIZE for _ in range(SIZE)]
+
+start_the_game(board, SIZE)
