@@ -9,7 +9,7 @@ def clear():
 
 
 def snake_position(size_board):
-    row = random.randrange(0, size_board)
+    row = random.randrange(3, size_board - 3)
     col = row
 
     return row, col
@@ -73,29 +73,34 @@ def the_game(board, size):
 
 
     while True:
+
         time.sleep(0.20)
         clear()
 
         if keyboard.is_pressed('down'):
-            move = 'down'
+            if move != 'up':
+                move = 'down'
 
-            board, snake_row, snake_col = move_action(board, snake_row, snake_col, move, firs_moves, size)
+                board, snake_row, snake_col = move_action(board, snake_row, snake_col, move, firs_moves, size)
 
 
         elif keyboard.is_pressed('right'):
-            move = 'right'
+            if move != 'left':
+                move = 'right'
 
-            board, snake_row, snake_col = move_action(board, snake_row, snake_col, move, firs_moves, size)
+                board, snake_row, snake_col = move_action(board, snake_row, snake_col, move, firs_moves, size)
 
         elif keyboard.is_pressed('up'):
-            move = 'up'
+            if move != 'down':
+                move = 'up'
 
-            board, snake_row, snake_col = move_action(board, snake_row, snake_col, move, firs_moves, size)
+                board, snake_row, snake_col = move_action(board, snake_row, snake_col, move, firs_moves, size)
 
         elif keyboard.is_pressed('left'):
-            move = 'left'
+            if move != 'right':
+                move = 'left'
 
-            board, snake_row, snake_col = move_action(board, snake_row, snake_col, move, firs_moves, size)
+                board, snake_row, snake_col = move_action(board, snake_row, snake_col, move, firs_moves, size)
 
         elif keyboard.is_pressed('escape'):
             break
@@ -139,8 +144,6 @@ def start_the_game(board, size):
 
     if start_game.lower() == 'yes':
         the_game(board, size)
-        clear()
-
         play_the_game_again(board, size)
 
     elif start_game.lower() == 'no':
