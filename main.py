@@ -52,7 +52,7 @@ def apple_position(size_board):
 #
 #     for _ in the_snake:
 #         start_from += 1
-#         the_board[old[0]][old[1]] = '*'
+#         the_board[old[0]][old[1]] = '◉'
 #
 #     return the_snake, the_board
 
@@ -63,12 +63,12 @@ def move_action(board, row, col, the_move, firs_moves, size):
     board[row][col] = '.'
     row, col = row + firs_moves[the_move][0], col + firs_moves[the_move][1]
 
-    if board[row][col] == 'A':
+    if board[row][col] == '★':
         apple_row, apple_col = apple_position(size)
-        board[row][col] = '*'
-        board[apple_row][apple_col] = 'A'
+        board[row][col] = '◉'
+        board[apple_row][apple_col] = '★'
     else:
-        board[row][col] = '*'
+        board[row][col] = '◉'
 
     return board, row, col
 
@@ -94,7 +94,7 @@ def the_game(board, size):
     snake_row, snake_col = snake_row + start_to[0], snake_col + start_to[1]
 
     apple_row, apple_col = apple_position(size)
-    board[apple_row][apple_col] = 'A'
+    board[apple_row][apple_col] = '★'
 
     snake = [(snake_row, snake_col)]
 
@@ -139,17 +139,17 @@ def the_game(board, size):
             snake[0] = (snake_row, snake_col)
 
             if 0 < snake_row < len(board) and 0 < snake_col < len(board):
-                if board[snake_row][snake_col] == 'A':
+                if board[snake_row][snake_col] == '★':
                     apple_row, apple_col = apple_position(size)
-                    board[snake_row][snake_col] = '*'
-                    board[apple_row][apple_col] = 'A'
+                    board[snake_row][snake_col] = '◉'
+                    board[apple_row][apple_col] = '★'
 
                     # snake, board = adding_tail(snake, move, board)
 
                 else:
-                    board[snake_row][snake_col] = '*'
+                    board[snake_row][snake_col] = '◉'
             else:
-                board[snake_row - firs_moves[move][0]][snake_col - firs_moves[move][1]] = '*'
+                board[snake_row - firs_moves[move][0]][snake_col - firs_moves[move][1]] = '◉'
                 print('\n\t\tYou dead\n')
                 break
 
