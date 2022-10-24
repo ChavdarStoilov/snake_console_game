@@ -30,6 +30,33 @@ def apple_position(size_board):
     return row, col
 
 
+# TODO : fix functionality  for tail on the snake
+
+# def adding_tail(the_snake, move, the_board):
+#     start_from = 0
+#
+#     old = the_snake[start_from]
+#
+#     if len(the_snake) == 1:
+#         if move == 'up':
+#             the_snake.append((old[0] + 1, old[1]))
+#
+#         elif move == 'down':
+#             the_snake.append((old[0] - 1, old[1]))
+#
+#         elif move == 'left':
+#             the_snake.append((old[0], old[1] + 1))
+#
+#         elif move == 'right':
+#             the_snake.append((old[0], old[1] - 1))
+#
+#     for _ in the_snake:
+#         start_from += 1
+#         the_board[old[0]][old[1]] = '*'
+#
+#     return the_snake, the_board
+
+
 def move_action(board, row, col, the_move, firs_moves, size):
 
 
@@ -69,7 +96,7 @@ def the_game(board, size):
     apple_row, apple_col = apple_position(size)
     board[apple_row][apple_col] = 'A'
 
-    snake = []
+    snake = [(snake_row, snake_col)]
 
 
     while True:
@@ -109,11 +136,16 @@ def the_game(board, size):
 
             board[snake_row][snake_col] = '.'
             snake_row, snake_col = snake_row + firs_moves[move][0], snake_col + firs_moves[move][1]
+            snake[0] = (snake_row, snake_col)
+
             if 0 < snake_row < len(board) and 0 < snake_col < len(board):
                 if board[snake_row][snake_col] == 'A':
                     apple_row, apple_col = apple_position(size)
                     board[snake_row][snake_col] = '*'
                     board[apple_row][apple_col] = 'A'
+
+                    # snake, board = adding_tail(snake, move, board)
+
                 else:
                     board[snake_row][snake_col] = '*'
             else:
