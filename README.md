@@ -1,2 +1,4 @@
-# snake_console_game
- Own try for create sname game
+# Snake console game
+ Own try for create snake game
+
+![img.png](img.png)
